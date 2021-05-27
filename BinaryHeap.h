@@ -163,7 +163,9 @@ public:
          return false;
     }
 
-    std::string 
+    std::string strBinaryHeap(){
+
+    }
 
     friend std::ostream& operator<<(std::ostream &out, BinaryHeap binaryHeap){
         out<<std::endl;
