@@ -262,22 +262,6 @@ void showAvailableBinaryTrees(ArraySequence<BinarySearchTree<float> *> *binarySe
 }
 
 template <class T>
-void saveBinaryHeap(BinaryHeap<T> *binaryHeap, ArraySequence<BinaryHeap<T> *> *arraySequence){
-    cout<<*binaryHeap;
-    cout<<"Do you want to save new binary heap?"<<endl;
-    cout<<"1. Yes."<<endl;
-    cout<<"2. No."<<endl;
-    int point = GetInt(1, 2);
-    switch (point) {
-        case 1:
-            arraySequence->Append(binaryHeap);
-            break;
-        case 2:
-            break;
-    }
-}
-
-template <class T>
 BinaryHeap<T> *getBinaryHeapFromMemory(ArraySequence<BinaryHeap<T> *> *arraySequence){
     if(arraySequence->GetLength() == 0){
         cout<<"There is no available binary heaps"<<endl;
@@ -286,7 +270,7 @@ BinaryHeap<T> *getBinaryHeapFromMemory(ArraySequence<BinaryHeap<T> *> *arraySequ
     printBinaryHeapFromMemory(arraySequence);
     cout<<"Which one do you want to use?"<<endl;
     int point = GetInt(1, arraySequence->GetLength());
-    BinaryHeap<T> *binaryHeap = new BinaryHeap<T>(arraySequence->Get(point-1)->GetArray());
+    auto *binaryHeap = arraySequence->Get(point-1);
     return binaryHeap;
 }
 
@@ -297,7 +281,6 @@ void AddElementBinaryHeap(ArraySequence<BinaryHeap<T> *> *arraySequence){
     T point;
     cin>>point;
     binaryHeap->AddElement(point);
-    saveBinaryHeap(binaryHeap, arraySequence);
 }
 
 template <class T>
@@ -323,7 +306,7 @@ void DeleteElementBinaryHeap(ArraySequence<BinaryHeap<T> *> *arraySequence){
                 break;
         }
     }
-    saveBinaryHeap(binaryHeap, arraySequence);
+    cout<<*binaryHeap;
 }
 
 template <class T>
@@ -348,7 +331,7 @@ void FindElementBinaryHeap(ArraySequence<BinaryHeap<T> *> *arraySequence){
                 break;
         }
     }
-    cout<<"Your element is located on "<< heapSize<<" position."<<endl;
+    cout<<"Your element is located on "<< heapSize + 1<<" position."<<endl;
 }
 
 template <class T>
@@ -384,26 +367,27 @@ void MapBinaryHeap(ArraySequence<BinaryHeap<T> *> *arraySequence){
     int a;
     cin>>a;
     cout<<endl;
+    BinaryHeap<T> *binaryHeap1;
     switch (point) {
         case 1:
-            binaryHeap->map(mult, a);
+            binaryHeap1 = binaryHeap->map(mult, a);
             break;
         case 2:
             if(a == 0){
                 cout<<"You cannot divide on 0"<<endl;
-                break;
+                return;
             }
-            binaryHeap->map(div, a);
+            binaryHeap1 = binaryHeap->map(div, a);
             break;
         case 3:
-            binaryHeap->map(add, a);
+            binaryHeap1 = binaryHeap->map(add, a);
             break;
         case 4:
-            binaryHeap->map(sub, a);
+            binaryHeap1 =  binaryHeap->map(sub, a);
             break;
         default: break;
     }
-    saveBinaryHeap(binaryHeap, arraySequence);
+    cout<<*binaryHeap1;
 }
 
 template <class T>
@@ -439,19 +423,20 @@ void WhereBinaryHeap(ArraySequence<BinaryHeap<T> *> *arraySequence){
     int a;
     cin>>a;
     cout<<endl;
+    BinaryHeap<T> *binaryHeap1;
     switch (point) {
         case 1:
-            binaryHeap->where(IsDivisibility, a);
+            binaryHeap1 = binaryHeap->where(IsDivisibility, a);
             break;
         case 2:
-            binaryHeap->where(IsMore, a);
+            binaryHeap1 = binaryHeap->where(IsMore, a);
             break;
         case 3:
-            binaryHeap->where(IsLess, a);
+            binaryHeap1 = binaryHeap->where(IsLess, a);
             break;
         default: break;
     }
-    saveBinaryHeap(binaryHeap, arraySequence);
+    cout<<*binaryHeap1;
 }
 
 template <class T>
@@ -477,7 +462,7 @@ void AllocateSubtreeBinaryHeap(ArraySequence<BinaryHeap<T> *> *arraySequence){
         }
     }
     BinaryHeap<T> *binaryHeap1 = binaryHeap->subBinaryHeap(point);
-    saveBinaryHeap(binaryHeap1, arraySequence);
+    cout<<*binaryHeap1;
 }
 
 void operateWithBinaryHeaps(ArraySequence<BinaryHeap<int> *> *binaryHeapIntArray, ArraySequence<BinaryHeap<float> *> *binaryHeapFloatArray){
@@ -538,6 +523,83 @@ void operateWithBinaryHeaps(ArraySequence<BinaryHeap<int> *> *binaryHeapIntArray
             AllocateSubtreeBinaryHeap(binaryHeapFloatArray);
             break;
         case 7:
+            break;
+        default: break;
+    }
+}
+
+template<class T>
+BinaryHeap<T> *getBinaryTreeFromMemory(ArraySequence<BinarySearchTree<T> *> *arraySequence){
+    if(arraySequence->GetLength() == 0){
+        cout<<"There is no available binary heaps"<<endl;
+        return nullptr;
+    }
+    printBinaryTreesFromMemory(arraySequence);
+    cout<<"Which one do you want to use?"<<endl;
+    int point = GetInt(1, arraySequence->GetLength());
+    auto *binaryTree = new BinarySearchTree<T>(arraySequence->Get(point-1)->GetRoot()->data);
+    return binaryTree;
+}
+
+template<class T>
+void AddElementBinaryHeap(ArraySequence<BinaryHeap<T> *> *arraySequence){
+    BinaryHeap<T> *binaryHeap = getBinaryHeapFromMemory(arraySequence);
+    cout<<"Number you want to add is?"<<endl;
+    T point;
+    cin>>point;
+    binaryHeap->AddElement(point);
+}
+
+void operateWithBinarySearchTree(ArraySequence<BinarySearchTree<float> *> *binarySearchFloatArray, ArraySequence<BinarySearchTree<int> *> *binarySearchIntArray){
+    cout<<"What do you want to do?"<<endl;
+    cout<<"1. Add element."<<endl;
+    cout<<"2. Delete element."<<endl;
+    cout<<"3. Find element."<<endl;
+    cout<<"4. Map binary search tree."<<endl;
+    cout<<"5. Do where binary search tree."<<endl;
+    cout<<"6. Exit."<<endl;
+    int point = GetInt(1, 6);
+    cout << "What type do you want?" << endl;
+    cout << "1. Int." << endl;
+    cout << "2. Float." << endl;
+    int b = GetInt(1, 2);
+    switch (point) {
+        case 1:
+            if(b == 1){
+                AddElementBinaryHeap(binaryHeapIntArray);
+                break;
+            }
+            AddElementBinaryHeap(binaryHeapFloatArray);
+            break;
+        case 2:
+            if(b == 1){
+                DeleteElementBinaryHeap(binaryHeapIntArray);
+                break;
+            }
+            DeleteElementBinaryHeap(binaryHeapFloatArray);
+            break;
+        case 3:
+            if(b == 1){
+                FindElementBinaryHeap(binaryHeapIntArray);
+                break;
+            }
+            FindElementBinaryHeap(binaryHeapFloatArray);
+            break;
+        case 4:
+            if(b == 1){
+                MapBinaryHeap(binaryHeapIntArray);
+                break;
+            }
+            MapBinaryHeap(binaryHeapFloatArray);
+            break;
+        case 5:
+            if(b == 1){
+                WhereBinaryHeap(binaryHeapIntArray);
+                break;
+            }
+            WhereBinaryHeap(binaryHeapFloatArray);
+            break;
+        case 6:
             break;
         default: break;
     }

@@ -57,10 +57,8 @@ public:
     }
 
     BinaryHeap(const BinaryHeap<T> &binaryHeap){
-        arraySequence = ArraySequence<T>(binaryHeap->arraySequence);
+        arraySequence = binaryHeap.arraySequence;
         HeapSize = arraySequence.GetLength();
-        for (int i = HeapSize / 2; i >= 0; i--)
-            heapify(i);
     }
 
     void AddElement(T n) {

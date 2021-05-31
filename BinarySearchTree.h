@@ -80,7 +80,7 @@ public:
         }
     }
 
-    void Erase(T key){
+    void DeleteElement(T key){
         TreeElement<T> * current = root;
         TreeElement<T> * parent = nullptr;
         while (current && current->data != key){
@@ -114,7 +114,7 @@ public:
         while (replace->leftChild)
             replace = replace->leftChild;
         T replace_value = replace->data;
-        Erase(replace_value);
+        DeleteElement(replace_value);
         current->data = replace_value;
     }
 
@@ -186,7 +186,7 @@ public:
         BypassTree(func, treeElement->rightChild);
         T a = treeElement->data;
         if (func(a))
-            Erase(a);
+            DeleteElement(a);
     }
 
     BinarySearchTree<T> where(bool func(T)){
