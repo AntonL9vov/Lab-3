@@ -56,6 +56,13 @@ public:
             heapify(i);
     }
 
+    BinaryHeap(const BinaryHeap<T> &binaryHeap){
+        arraySequence = ArraySequence<T>(binaryHeap->arraySequence);
+        HeapSize = arraySequence.GetLength();
+        for (int i = HeapSize / 2; i >= 0; i--)
+            heapify(i);
+    }
+
     void AddElement(T n) {
         arraySequence.Append(n);
         int i = HeapSize - 1;
@@ -89,24 +96,24 @@ public:
             heapify(i);
     }
 
-    BinaryHeap<T> *map(T func(T)){
+    BinaryHeap<T> *map(T func(T, T), T b){
         T *a = new T[HeapSize];
         for (int i = 0; i < HeapSize; ++i) {
             a[i] = 0;
         }
         ArraySequence<T> arraySequence1 = ArraySequence<T>(a, HeapSize);
         for (int i = 0; i < HeapSize; ++i) {
-            arraySequence1.InsertAt(func(arraySequence.Get(i)), i);
+            arraySequence1.InsertAt(func(arraySequence.Get(i), b), i);
         }
         BinaryHeap<T> *binaryHeap = new BinaryHeap<T>(arraySequence1);
 
         return binaryHeap;
     }
 
-    BinaryHeap<T> *where(bool func(T)){
+    BinaryHeap<T> *where(bool func(T, T), T b){
         ArraySequence<T> arraySequence1 = ArraySequence<T>(arraySequence);
         for (int i = 0; i < arraySequence1.GetLength(); ++i) {
-            if(!func(arraySequence1.Get(i)))
+            if(!func(arraySequence1.Get(i), b))
                 arraySequence1.deleteElement(i);
         }
         BinaryHeap<T> *binaryHeap = new BinaryHeap<T>(arraySequence1);
@@ -162,10 +169,6 @@ public:
          return false;
     }
 
-    std::string strBinaryHeap(){
-
-    }
-
     int GetHeapSize(){
         return HeapSize;
     }
@@ -187,5 +190,9 @@ public:
         }
         out<<std::endl;
         return out;
+    }
+
+    ArraySequence<T> GetArray(){
+        return arraySequence;
     }
 };
