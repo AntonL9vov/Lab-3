@@ -3,7 +3,9 @@
 
 CMakeFiles/untitled9.dir/main.cpp.obj: ../ArraySequence.h
 CMakeFiles/untitled9.dir/main.cpp.obj: ../BinaryHeap.h
+CMakeFiles/untitled9.dir/main.cpp.obj: ../BinarySearchTree.h
 CMakeFiles/untitled9.dir/main.cpp.obj: ../DynamicArray.h
 CMakeFiles/untitled9.dir/main.cpp.obj: ../IndexOutOfRangeException.h
 CMakeFiles/untitled9.dir/main.cpp.obj: ../main.cpp
+CMakeFiles/untitled9.dir/main.cpp.obj: ../menu.h
 

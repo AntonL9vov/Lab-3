@@ -15,7 +15,6 @@ private:
     ArraySequence<T> arraySequence;
     int HeapSize;
 public:
-
     void heapify(int i){
         int leftChild;
         int rightChild;
@@ -165,6 +164,10 @@ public:
 
     std::string strBinaryHeap(){
 
+    }
+
+    int GetHeapSize(){
+        return HeapSize;
     }
 
     friend std::ostream& operator<<(std::ostream &out, BinaryHeap binaryHeap){

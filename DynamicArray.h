@@ -14,6 +14,12 @@ private:
     int length;
     size_t sizeOfElement = sizeof(T);
 public:
+    DynamicArray(T a){
+        array = new T[1];
+        array[0] = a;
+        length = 1;
+    }
+
     DynamicArray(){
         length = 0;
         array = nullptr;
@@ -29,11 +35,11 @@ public:
         }
     }
 
-    DynamicArray(int size) {
-        length = size;
-        array = new T[size];
-        for(int i = 0; i<size; i++) array[i] = 0;
-    }
+   // DynamicArray(int size) {
+   //     length = size;
+   //     array = new T[size];
+   //     for(int i = 0; i<size; i++) array[i] = 0;
+   // }
 
     DynamicArray(const DynamicArray<T> &dynamicArray ) {
         length = 0;

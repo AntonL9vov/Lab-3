@@ -17,6 +17,10 @@ class ArraySequence{
 private:
     DynamicArray<T> dynamicArray;
 public:
+    ArraySequence(T a){
+        dynamicArray = DynamicArray<T>(a);
+    }
+
     ArraySequence(T* items, int count){
         dynamicArray = DynamicArray<T>(items, count);
     }
