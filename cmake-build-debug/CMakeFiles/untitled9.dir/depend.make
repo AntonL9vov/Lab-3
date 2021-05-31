@@ -8,4 +8,5 @@ CMakeFiles/untitled9.dir/main.cpp.obj: ../DynamicArray.h
 CMakeFiles/untitled9.dir/main.cpp.obj: ../IndexOutOfRangeException.h
 CMakeFiles/untitled9.dir/main.cpp.obj: ../main.cpp
 CMakeFiles/untitled9.dir/main.cpp.obj: ../menu.h
+CMakeFiles/untitled9.dir/main.cpp.obj: ../tests.h
 

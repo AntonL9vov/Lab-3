@@ -28,13 +28,13 @@ class BinarySearchTree{
 private:
     TreeElement<T> *root;
     size_t size;
-   // void delete_tree(TreeElement<T> * current){
-   //     if(current){
-   //         delete_tree(current->rightChild);
-   //         delete_tree(current->leftChild);
-   //         delete current;
-   //     }
-   // }
+    void delete_tree(TreeElement<T> * current){
+        if(current){
+            delete_tree(current->rightChild);
+            delete_tree(current->leftChild);
+            delete current;
+        }
+    }
 public:
     BinarySearchTree(T a){
         root = new TreeElement<T>(a);
@@ -45,9 +45,9 @@ public:
         root = r;
     }
 
-   // ~BinarySearchTree(){
-   //     delete_tree(root);
-   // }
+    ~BinarySearchTree(){
+        delete_tree(root);
+    }
 
     bool Find(T key){
         TreeElement<T> *current = root;
@@ -153,19 +153,19 @@ public:
         balanceTree(root1->rightChild);
     }
 
-    TreeElement<T> *copyElements(TreeElement<T> *treeElement, T func(T)){
+    TreeElement<T> *copyElements(TreeElement<T> *treeElement, T func(T, T), T b){
         if(treeElement == nullptr)
             return nullptr;
         T a = treeElement->data;
-        TreeElement<T> *newNode = new TreeElement<T>(func(a));
-        newNode->leftChild = copyElements(treeElement->leftChild, func);
-        newNode->rightChild = copyElements(treeElement->rightChild, func);
+        TreeElement<T> *newNode = new TreeElement<T>(func(a, b));
+        newNode->leftChild = copyElements(treeElement->leftChild, func, b);
+        newNode->rightChild = copyElements(treeElement->rightChild, func, b);
         return newNode;
     }
 
-    BinarySearchTree<T> map(T func(T)){
-        TreeElement<T> *newNode = copyElements(root, func);
-        BinarySearchTree<T> binarySearchTree = BinarySearchTree<T>(newNode);
+    BinarySearchTree<T> *map(T func(T, T), T a){
+        TreeElement<T> *newNode = copyElements(root, func, a);
+        BinarySearchTree<T> *binarySearchTree = new BinarySearchTree<T>(newNode);
         return binarySearchTree;
     }
 
@@ -179,20 +179,32 @@ public:
         return newNode;
     }
 
-    void BypassTree(bool func(T), TreeElement<T> *treeElement){
+    bool isEqual(TreeElement<T> *treeElement, TreeElement<T> *treeElement1, bool flag){
+        if(treeElement == nullptr)
+            return flag;
+        T a = treeElement->data;
+        T b = treeElement1->data;
+        if(a!=b)
+            flag = false;
+        isEqual(treeElement->rightChild, treeElement1->rightChild, flag);
+        isEqual(treeElement->leftChild, treeElement1->leftChild, flag);
+        return flag;
+    }
+
+    void BypassTree(bool func(T, T), TreeElement<T> *treeElement, T b){
         if(treeElement == nullptr)
             return;
-        BypassTree(func, treeElement->leftChild);
-        BypassTree(func, treeElement->rightChild);
+        BypassTree(func, treeElement->leftChild, b);
+        BypassTree(func, treeElement->rightChild, b);
         T a = treeElement->data;
-        if (func(a))
+        if (func(a, b))
             DeleteElement(a);
     }
 
-    BinarySearchTree<T> where(bool func(T)){
+    BinarySearchTree<T> *where(bool func(T, T), T a){
         TreeElement<T> *newNode = copyElements(root);
-        BinarySearchTree<T> binarySearchTree = BinarySearchTree<T>(newNode);
-        binarySearchTree.BypassTree(func, binarySearchTree.GetRoot());
+        BinarySearchTree<T> *binarySearchTree =  new BinarySearchTree<T>(newNode);
+        binarySearchTree->BypassTree(func, binarySearchTree->GetRoot(), a);
         return binarySearchTree;
     }
 

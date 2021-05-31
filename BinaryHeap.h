@@ -46,7 +46,6 @@ public:
         HeapSize = count;
         for (int i = HeapSize / 2; i >= 0; i--)
             heapify(i);
-
     }
 
     BinaryHeap(const ArraySequence<T> &arraySequence1){
@@ -74,6 +73,8 @@ public:
             parent = (i - 1) / 2;
         }
         HeapSize++;
+        for (int i = HeapSize / 2; i >= 0; i--)
+            heapify(i);
     }
 
     int findElement(T a){
@@ -155,7 +156,7 @@ public:
         T *arr = new T[1];
         arr[0] = arraySequence.Get(a);
         ArraySequence<T> arraySequence1 = ArraySequence<T>(arr, 1);
-        for (int i = a, j = 1; i*2 + 1 + j*2 < HeapSize; i = i*2 + 1, j++) {
+        for (int i = a, j = 1; i*2 + 1 + j*2 < HeapSize; i = i*2 + 1, j = j*2) {
             for (int k = 0; k < j*2; ++k) {
                 arraySequence1.Append(arraySequence.Get(i*2 + 1 + k));
             }

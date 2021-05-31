@@ -6,7 +6,7 @@
 #define UNTITLED9_MENU_H
 
 #endif //UNTITLED9_MENU_H
-#include "BinarySearchTree.h"
+#include "tests.h"
 
 
 using namespace std;
@@ -529,7 +529,7 @@ void operateWithBinaryHeaps(ArraySequence<BinaryHeap<int> *> *binaryHeapIntArray
 }
 
 template<class T>
-BinaryHeap<T> *getBinaryTreeFromMemory(ArraySequence<BinarySearchTree<T> *> *arraySequence){
+BinarySearchTree<T> *getBinaryTreeFromMemory(ArraySequence<BinarySearchTree<T> *> *arraySequence){
     if(arraySequence->GetLength() == 0){
         cout<<"There is no available binary heaps"<<endl;
         return nullptr;
@@ -537,17 +537,134 @@ BinaryHeap<T> *getBinaryTreeFromMemory(ArraySequence<BinarySearchTree<T> *> *arr
     printBinaryTreesFromMemory(arraySequence);
     cout<<"Which one do you want to use?"<<endl;
     int point = GetInt(1, arraySequence->GetLength());
-    auto *binaryTree = new BinarySearchTree<T>(arraySequence->Get(point-1)->GetRoot()->data);
+    TreeElement<T> *newNode = arraySequence->Get(point-1)->copyElements(arraySequence->Get(point-1)->GetRoot());
+    auto *binaryTree = new BinarySearchTree<T>(newNode);
     return binaryTree;
 }
 
 template<class T>
-void AddElementBinaryHeap(ArraySequence<BinaryHeap<T> *> *arraySequence){
-    BinaryHeap<T> *binaryHeap = getBinaryHeapFromMemory(arraySequence);
+void AddElementBinaryTree(ArraySequence<BinarySearchTree<T> *> *arraySequence){
+    BinarySearchTree<T> *binaryTree = getBinaryTreeFromMemory(arraySequence);
     cout<<"Number you want to add is?"<<endl;
     T point;
     cin>>point;
-    binaryHeap->AddElement(point);
+    binaryTree->Add(point);
+    printBinarySearchTree(binaryTree->GetRoot());
+}
+
+template <class T>
+void DeleteElementBinaryTree(ArraySequence<BinarySearchTree<T> *> *arraySequence){
+    BinarySearchTree<T> *binaryTree = getBinaryTreeFromMemory(arraySequence);
+    cout<<"Number you want to delete is?"<<endl;
+    T point;
+    cin>>point;
+    size_t heapSize = binaryTree->GetSize();
+    binaryTree->DeleteElement(point);
+    if(heapSize == binaryTree->GetSize()) {
+        cout << "There is no such element as " << point << "." << endl;
+        cout<<"Do you want to try again?"<<endl;
+        cout<<"1. Yes."<<endl;
+        cout<<"2. No."<<endl;
+        int point = GetInt(1, 2);
+        switch (point) {
+            case 1:
+                DeleteElementBinaryTree(arraySequence);
+                break;
+            case 2:
+                return;
+                break;
+        }
+    }
+    printBinarySearchTree(binaryTree->GetRoot());
+}
+
+template <class T>
+void FindElementBinaryTree(ArraySequence<BinarySearchTree<T> *> *arraySequence){
+    BinarySearchTree<T> *binaryTree = getBinaryTreeFromMemory(arraySequence);
+    cout<<"Number you want to find is?"<<endl;
+    T point;
+    cin>>point;
+    bool a = binaryTree->Find(point);
+    if(!a){
+        cout << "There is no such element as " << point << "." << endl;
+        cout<<"Do you want to try again?"<<endl;
+        cout<<"1. Yes."<<endl;
+        cout<<"2. No."<<endl;
+        int point = GetInt(1, 2);
+        switch (point) {
+            case 1:
+                FindElementBinaryTree(arraySequence);
+                break;
+            case 2:
+                return;
+                break;
+        }
+    }
+    cout << "This element " << point << " is in the tree." << endl;
+}
+
+template <class T>
+void MapBinaryTree(ArraySequence<BinarySearchTree<T> *> *arraySequence){
+    BinarySearchTree<T> *binaryTree = getBinaryTreeFromMemory(arraySequence);
+    cout<<"What do you want to do?"<<endl;
+    cout<<"1. Multiply."<<endl;
+    cout<<"2. Divide."<<endl;
+    cout<<"3. Add."<<endl;
+    cout<<"4. Subtraction."<<endl;
+    int point = GetInt(1, 4);
+    cout<<"Input second operating number: ";
+    int a;
+    cin>>a;
+    cout<<endl;
+    BinarySearchTree<T> *binarySearchTree;
+    switch (point) {
+        case 1:
+            binarySearchTree = binaryTree->map(mult, a);
+            break;
+        case 2:
+            if(a == 0){
+                cout<<"You cannot divide on 0"<<endl;
+                return;
+            }
+            binarySearchTree = binaryTree->map(div, a);
+            break;
+        case 3:
+            binarySearchTree = binaryTree->map(add, a);
+            break;
+        case 4:
+            binarySearchTree =  binaryTree->map(sub, a);
+            break;
+        default: break;
+    }
+    printBinarySearchTree(binarySearchTree->GetRoot());
+}
+
+template <class T>
+void WhereBinaryTree(ArraySequence<BinarySearchTree<T> *> *arraySequence){
+    BinarySearchTree<T> *binaryTree = getBinaryTreeFromMemory(arraySequence);
+    cout<<"What do you want to do?"<<endl;
+    cout<<"1. Divisibility."<<endl;
+    cout<<"2. More."<<endl;
+    cout<<"3. Less."<<endl;
+    int point = GetInt(1, 3);
+    cout<<"Input second operating number: ";
+    int a;
+    cin>>a;
+    cout<<endl;
+    BinarySearchTree<T> *binarySearchTree;
+    switch (point) {
+        case 1:
+            binarySearchTree = binaryTree->where(IsDivisibility, a);
+            break;
+        case 2:
+            binarySearchTree = binaryTree->where(IsMore, a);
+            break;
+        case 3:
+            binarySearchTree = binaryTree->where(IsLess, a);
+            break;
+        default: break;
+    }
+    printBinarySearchTree(binarySearchTree->GetRoot());
 }
 
 void operateWithBinarySearchTree(ArraySequence<BinarySearchTree<float> *> *binarySearchFloatArray, ArraySequence<BinarySearchTree<int> *> *binarySearchIntArray){
@@ -566,38 +683,38 @@ void operateWithBinarySearchTree(ArraySequence<BinarySearchTree<float> *> *binar
     switch (point) {
         case 1:
             if(b == 1){
-                AddElementBinaryHeap(binaryHeapIntArray);
+                AddElementBinaryTree(binarySearchIntArray);
                 break;
             }
-            AddElementBinaryHeap(binaryHeapFloatArray);
+            AddElementBinaryTree(binarySearchFloatArray);
             break;
         case 2:
             if(b == 1){
-                DeleteElementBinaryHeap(binaryHeapIntArray);
+                DeleteElementBinaryTree(binarySearchIntArray);
                 break;
             }
-            DeleteElementBinaryHeap(binaryHeapFloatArray);
+            DeleteElementBinaryTree(binarySearchFloatArray);
             break;
         case 3:
             if(b == 1){
-                FindElementBinaryHeap(binaryHeapIntArray);
+                FindElementBinaryTree(binarySearchIntArray);
                 break;
             }
-            FindElementBinaryHeap(binaryHeapFloatArray);
+            FindElementBinaryTree(binarySearchFloatArray);
             break;
         case 4:
             if(b == 1){
-                MapBinaryHeap(binaryHeapIntArray);
+                MapBinaryTree(binarySearchIntArray);
                 break;
             }
-            MapBinaryHeap(binaryHeapFloatArray);
+            MapBinaryTree(binarySearchFloatArray);
             break;
         case 5:
             if(b == 1){
-                WhereBinaryHeap(binaryHeapIntArray);
+                WhereBinaryTree(binarySearchIntArray);
                 break;
             }
-            WhereBinaryHeap(binaryHeapFloatArray);
+            WhereBinaryTree(binarySearchFloatArray);
             break;
         case 6:
             break;
@@ -619,13 +736,12 @@ void mainMenu(){
         cout<<"4. Show available binary search trees."<<endl;
         cout<<"5. Operate with binary heaps."<<endl;
         cout<<"6. Operate with binary search tree."<<endl;
-        cout<<"7. Launch binary heap's test."<<endl;
-        cout<<"8. Launch binary search tree's test."<<endl;
-        cout<<"9. Exit."<<endl;
+        cout<<"7. Launch tests."<<endl;
+        cout<<"8. Exit."<<endl;
 
-        int point = GetInt(1, 9);
+        int point = GetInt(1, 8);
 
-        if (point == 9)
+        if (point == 8)
             break;
         switch (point) {
             case 1:
@@ -644,10 +760,10 @@ void mainMenu(){
                 operateWithBinaryHeaps(&binaryHeapIntArray, &binaryHeapFloatArray);
                 break;
             case 6:
+                operateWithBinarySearchTree(&binarySearchFloatArray, &binarySearchIntArray);
                 break;
             case 7:
-                break;
-            case 8:
+                testBinaryHeapFindSubBinaryHeap(10);
                 break;
             default:
                 break;
