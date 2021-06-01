@@ -151,7 +151,7 @@ void testBinaryHeapIsEqual(int count){
         binaryHeap->AddElement(i);
         binaryHeap1->AddElement(i);
     }
-    if(binaryHeap == binaryHeap1)
+    if(*binaryHeap == *binaryHeap1)
         testPass(count, passed);
     else
         testPass(count, 0);
@@ -197,7 +197,7 @@ void testBinaryHeapSubBinaryHeap(int count){
     BinaryHeap<int> *binaryHeap1 = new BinaryHeap<int>(b, 7);
     BinaryHeap<int> *binaryHeap2 = binaryHeap->subBinaryHeap(9);
 
-    if (binaryHeap1 == binaryHeap2)
+    if (*binaryHeap1 == *binaryHeap2)
         testPass(count, passed);
     else
         testPass(count, 0);
@@ -221,6 +221,15 @@ void testBinaryHeapFindSubBinaryHeap(int count){
         testPass(count, 0);
 }
 
-void tests(){
-    
+void tests(int count){
+    testBinaryHeapAdd(count);
+    testBinaryHeapDelete(count);
+    testBinaryHeapFindSubBinaryHeap(count);
+    testBinaryHeapIsEqual(count);
+    testBinaryHeapMap(count);
+    testBinaryHeapWhere(count);
+    testBinaryTreeAdd(count);
+    testBinaryTreeDelete(count);
+    testBinaryTreeGetSize(count);
+    testBinaryTreeIsEqual(count);
 }

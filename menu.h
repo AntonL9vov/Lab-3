@@ -763,7 +763,7 @@ void mainMenu(){
                 operateWithBinarySearchTree(&binarySearchFloatArray, &binarySearchIntArray);
                 break;
             case 7:
-                testBinaryHeapFindSubBinaryHeap(10);
+                tests(10);
                 break;
             default:
                 break;

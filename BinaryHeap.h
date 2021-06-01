@@ -128,7 +128,7 @@ public:
             return nullptr;
         arr[0] = a;
         ArraySequence<T> arraySequence1 = ArraySequence<T>(arr, 1);
-        for (int i = b, j = 1; i*2 + 1 + j*2 < HeapSize; i = i*2 + 1, j++) {
+        for (int i = b, j = 1; i*2 + 1 + j*2 < HeapSize; i = i*2 + 1, j=j*2) {
             for (int k = 0; k < j*2; ++k) {
                 arraySequence1.Append(arraySequence.Get(i*2 + 1 + k));
             }
