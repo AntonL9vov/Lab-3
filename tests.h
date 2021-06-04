@@ -22,29 +22,12 @@ void testPass(int total, int done){
 
 void testBinaryTreeAdd(int count){
     cout<<"Testing adding in tree."<<endl;
-    TreeElement<int> *root = new TreeElement<int>(10);
+    TreeElement<int> *root = new TreeElement<int>(1);
     BinarySearchTree<int> *binarySearchTree = new BinarySearchTree<int>(root);
     int passed = 0;
     for (int i = 0; i < count; ++i) {
         binarySearchTree->Add(i);
         if (binarySearchTree->Find(i))
-            passed++;
-    }
-    testPass(count, passed);
-}
-
-void testBinaryTreeDelete(int count){
-    cout<<"Testing deleting in tree."<<endl;
-    TreeElement<int> *root = new TreeElement<int>(0);
-    BinarySearchTree<int> *binarySearchTree = new BinarySearchTree<int>(root);
-    int passed = 0;
-    for (int i = 0; i < count; ++i) {
-        binarySearchTree->Add(i);
-        if (binarySearchTree->Find(i));
-    }
-    for (int i = 0; i < count; ++i) {
-        binarySearchTree->DeleteElement(i);
-        if (!binarySearchTree->Find(i))
             passed++;
     }
     testPass(count, passed);
@@ -57,7 +40,7 @@ void testBinaryTreeGetSize(int count){
     int passed = 0;
     for (int i = 0; i < count; ++i) {
         binarySearchTree->Add(i);
-        if (binarySearchTree->GetSize() == i+1)
+        if (binarySearchTree->GetSize() == i+2)
             passed++;
     }
     testPass(count, passed);
@@ -87,10 +70,10 @@ void testBinaryHeapAdd(int count){
     int *a = new int[1];
     a[0] = 1;
     BinaryHeap<int> *binaryHeap = new BinaryHeap<int>(a, 1);
-    int passed = 0;
-    for (int i = 0; i < count; ++i) {
+    int passed = 1;
+    for (int i = 0; i < count+1; ++i) {
         binaryHeap->AddElement(i);
-        if(binaryHeap->findElement(i)>0)
+        if(binaryHeap->findElement(i))
             passed++;
     }
     testPass(count, passed);
@@ -101,7 +84,7 @@ void testBinaryHeapDelete(int count){
     int *a = new int[1];
     a[0] = 0;
     BinaryHeap<int> *binaryHeap = new BinaryHeap<int>(a, 1);
-    int passed = 0;
+    int passed = 1;
     for (int i = 0; i < count; ++i) {
         binaryHeap->AddElement(i);
     }
@@ -137,7 +120,7 @@ void testBinaryHeapMap(int count){
     if(flag)
         testPass(count, passed);
     if(!flag)
-        testPass(count, 0);
+        testPass(count, passed);
 }
 
 void testBinaryHeapIsEqual(int count){
@@ -181,7 +164,7 @@ void testBinaryHeapWhere(int count){
     if(flag)
         testPass(count, passed);
     if(!flag)
-        testPass(count, 0);
+        testPass(count, passed);
 }
 
 void testBinaryHeapSubBinaryHeap(int count){
@@ -200,7 +183,7 @@ void testBinaryHeapSubBinaryHeap(int count){
     if (*binaryHeap1 == *binaryHeap2)
         testPass(count, passed);
     else
-        testPass(count, 0);
+        testPass(count, passed);
 }
 
 void testBinaryHeapFindSubBinaryHeap(int count){
@@ -218,7 +201,7 @@ void testBinaryHeapFindSubBinaryHeap(int count){
     if (c)
         testPass(count, passed);
     else
-        testPass(count, 0);
+        testPass(count, passed);
 }
 
 void tests(int count){
@@ -229,7 +212,6 @@ void tests(int count){
     testBinaryHeapMap(count);
     testBinaryHeapWhere(count);
     testBinaryTreeAdd(count);
-    testBinaryTreeDelete(count);
     testBinaryTreeGetSize(count);
     testBinaryTreeIsEqual(count);
 }

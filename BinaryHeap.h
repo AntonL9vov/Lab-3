@@ -64,8 +64,7 @@ public:
         arraySequence.Append(n);
         int i = HeapSize - 1;
         int parent = (i - 1) / 2;
-        while (i > 0 && arraySequence.Get(parent) < arraySequence.Get(i))
-        {
+        while (i > 0 && arraySequence.Get(parent) < arraySequence.Get(i)){
             int temp = arraySequence.Get(i);
             arraySequence.InsertAt(arraySequence.Get(parent), i);
             arraySequence.InsertAt(temp, parent);

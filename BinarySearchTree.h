@@ -43,6 +43,7 @@ public:
 
     BinarySearchTree(TreeElement<T> *r){
         root = r;
+        size = 1;
     }
 
     ~BinarySearchTree(){
@@ -79,6 +80,38 @@ public:
                 current = current->rightChild;
         }
     }
+
+    unsigned char height(TreeElement<T> * p){
+        return p?p->height:0;
+    }
+
+    int balanceFactor(TreeElement<T>* p){
+        return height(p->rightChild)-height(p->leftChild);
+    }
+
+    void fixHeight(TreeElement<T>* p){
+        unsigned char hl = height(p->leftChild);
+        unsigned char hr = height(p->rightChild);
+        p->height = (hl>hr?hl:hr)+1;
+    }
+
+    TreeElement<T>* rotateRight(TreeElement<T>* p){
+        TreeElement<T>* q = p->leftChild;
+        p->leftChild = q->rightChild;
+        q->rightChild = p;
+        fixHeight(p);
+        fixHeight(q);
+        return q;
+    }
+
+    void balanceTree(TreeElement<T> *root1){
+        if (root1!= nullptr)
+            return;
+        balance(root1);
+        balanceTree(root1->leftChild);
+        balanceTree(root1->rightChild);
+    }
+
 
     void DeleteElement(T key){
         TreeElement<T> * current = root;
@@ -122,37 +155,6 @@ public:
         return size;
     }
 
-    unsigned char height(TreeElement<T> * p){
-        return p?p->height:0;
-    }
-
-    int balanceFactor(TreeElement<T>* p){
-        return height(p->rightChild)-height(p->leftChild);
-    }
-
-    void fixHeight(TreeElement<T>* p){
-        unsigned char hl = height(p->leftChild);
-        unsigned char hr = height(p->rightChild);
-        p->height = (hl>hr?hl:hr)+1;
-    }
-
-    TreeElement<T>* rotateRight(TreeElement<T>* p){
-        TreeElement<T>* q = p->leftChild;
-        p->leftChild = q->rightChild;
-        q->rightChild = p;
-        fixHeight(p);
-        fixHeight(q);
-        return q;
-    }
-
-    void balanceTree(TreeElement<T> *root1){
-        if (root1!= nullptr)
-            return;
-        balance(root1);
-        balanceTree(root1->leftChild);
-        balanceTree(root1->rightChild);
-    }
-
     TreeElement<T> *copyElements(TreeElement<T> *treeElement, T func(T, T), T b){
         if(treeElement == nullptr)
             return nullptr;
@@ -191,11 +193,11 @@ public:
         return flag;
     }
 
-    void BypassTree(bool func(T, T), TreeElement<T> *treeElement, T b){
+    void TraverseTree(bool func(T, T), TreeElement<T> *treeElement, T b){
         if(treeElement == nullptr)
             return;
-        BypassTree(func, treeElement->leftChild, b);
-        BypassTree(func, treeElement->rightChild, b);
+        TraverseTree(func, treeElement->leftChild, b);
+        TraverseTree(func, treeElement->rightChild, b);
         T a = treeElement->data;
         if (func(a, b))
             DeleteElement(a);
@@ -204,11 +206,27 @@ public:
     BinarySearchTree<T> *where(bool func(T, T), T a){
         TreeElement<T> *newNode = copyElements(root);
         BinarySearchTree<T> *binarySearchTree =  new BinarySearchTree<T>(newNode);
-        binarySearchTree->BypassTree(func, binarySearchTree->GetRoot(), a);
+        binarySearchTree->TraverseTree(func, binarySearchTree->GetRoot(), a);
         return binarySearchTree;
     }
 
     TreeElement<T> *GetRoot(){
         return root;
+    }
+
+    BinarySearchTree<T> *GetSubTree(T element){
+        TreeElement<T> *current = root;
+        while (current && current->data != element){
+            if (current->data > element)
+                current = current->leftChild;
+            else
+                current = current->rightChild;
+        }
+        if(current == nullptr)
+            return nullptr;
+
+        auto *r = copyElements(current);
+        BinarySearchTree<T> *binarySearchTree = new BinarySearchTree<T>(r);
+        return binarySearchTree;
     }
 };
